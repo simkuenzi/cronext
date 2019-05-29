@@ -48,6 +48,6 @@ class CronExpr(private val expression: String) {
         val first = now.withSecond(0).withNano(0)
         val last = LocalDateTime.of(first.toLocalDate() + Period.ofYears(1), first.toLocalTime())
         val duration = Duration.between(first, last)
-        return LongStream.range(1, duration.toMinutes()).mapToObj { first + Duration.ofMinutes(it) }
+        return LongStream.range(1, duration.toMinutes() + 1).mapToObj { first + Duration.ofMinutes(it) }
     }
 }
