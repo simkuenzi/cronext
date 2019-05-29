@@ -48,13 +48,29 @@ class CronValue(private val valueExpr: String) {
         return if (split.size > 1) split[1] else null
     }
 
-    private fun simple(range: IntRange) = if (timeExpr() == "*") range.asStream() else timeExpr().split(",").stream().mapToInt { it.toInt() }
+    private fun simple(range: IntRange) = if (timeExpr() == "*") range.asStream() else timeExpr().split(",").stream().mapToInt { parseScalar(it) }
 
     private fun range(): IntStream {
         val split = timeExpr().split("-")
         return IntStream.range(split[0].toInt(), split[1].toInt() + 1)
     }
 
+    private fun parseScalar(scalarExpr: String) = when (scalarExpr) {
+        "mon"  -> 0
+        "jan", "tue" -> 1
+        "feb", "wed" -> 2
+        "mar", "thu" -> 3
+        "apr", "fri" -> 4
+        "may", "sat" -> 5
+        "jun", "sun" -> 6
+        "jul" -> 7
+        "aug" -> 8
+        "sep" -> 9
+        "oct" -> 10
+        "nov" -> 11
+        "dec" -> 12
+        else -> scalarExpr.toInt()
+    }
 }
 
 fun IntRange.asStream(): IntStream = IntStream.range(start, endInclusive + 1)

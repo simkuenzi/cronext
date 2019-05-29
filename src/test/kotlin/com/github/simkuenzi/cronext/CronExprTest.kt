@@ -50,10 +50,10 @@ internal class CronExprTest {
     fun next5() {
         val cronExpr = CronExpr("0 17 * * sun")
         val start = LocalDateTime.of(2019, 2, 8, 17, 43)
-        assertEquals(LocalDateTime.of(2019, 2, 9, 17, 0), cronExpr.next(start))
-        assertEquals(LocalDateTime.of(2019, 2, 16, 17, 0), cronExpr.skip(start).next())
-        assertEquals(LocalDateTime.of(2019, 2, 23, 17, 0), cronExpr.skip(start, 2).next())
-        assertEquals(LocalDateTime.of(2019, 3, 7, 17, 0), cronExpr.skip(start, 3).next())
+        assertEquals(LocalDateTime.of(2019, 2, 10, 17, 0), cronExpr.next(start))
+        assertEquals(LocalDateTime.of(2019, 2, 17, 17, 0), cronExpr.skip(start).next())
+        assertEquals(LocalDateTime.of(2019, 2, 24, 17, 0), cronExpr.skip(start, 2).next())
+        assertEquals(LocalDateTime.of(2019, 3, 3, 17, 0), cronExpr.skip(start, 3).next())
     }
 
     @Test
@@ -103,7 +103,7 @@ internal class CronExprTest {
         assertEquals(LocalDateTime.of(2019, 2, 10, 4, 0), cronExpr.next(start))
         assertEquals(LocalDateTime.of(2019, 2, 10, 17, 0), cronExpr.skip(start).next())
         assertEquals(LocalDateTime.of(2019, 2, 11, 4, 0), cronExpr.skip(start, 2).next())
-        assertEquals(LocalDateTime.of(2019, 2, 11, 4, 0), cronExpr.skip(start, 3).next())
+        assertEquals(LocalDateTime.of(2019, 2, 11, 17, 0), cronExpr.skip(start, 3).next())
     }
 
     @Test
