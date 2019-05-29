@@ -1,7 +1,8 @@
 package com.github.simkuenzi.cronext
 
-import java.time.*
-import java.util.*
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.Period
 import java.util.stream.LongStream
 import java.util.stream.Stream
 
@@ -32,6 +33,16 @@ class CronExpr(private val expression: String) {
             .findFirst()
             .orElseGet { LocalDateTime.MAX }
     }
+
+    fun skip(now: LocalDateTime, times: Int) : CronQuery {
+        var query = skip(now)
+        for (x in (2..times)) {
+            query = query.skip()
+        }
+        return query
+    }
+
+    fun skip(now: LocalDateTime) = CronQuery(next(now), this)
 
     private fun candidates(now: LocalDateTime) : Stream<LocalDateTime> {
         val first = now.withSecond(0).withNano(0)
