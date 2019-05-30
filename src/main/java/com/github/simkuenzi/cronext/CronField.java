@@ -2,6 +2,6 @@ package com.github.simkuenzi.cronext;
 
 import java.time.LocalDateTime;
 
-public interface CronField {
+interface CronField {
     boolean matches(LocalDateTime dateTime);
 }

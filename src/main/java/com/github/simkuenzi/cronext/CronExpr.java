@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 │ │ │ │ │
 * * * * *
  */
+@SuppressWarnings("WeakerAccess")
 public class CronExpr {
     private String expression;
 

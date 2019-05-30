@@ -2,12 +2,13 @@ package com.github.simkuenzi.cronext;
 
 import java.time.LocalDateTime;
 
+@SuppressWarnings("WeakerAccess")
 public class CronQuery {
 
     private LocalDateTime dateTime;
     private CronExpr cronExpr;
 
-    public CronQuery(LocalDateTime dateTime, CronExpr cronExpr) {
+    CronQuery(LocalDateTime dateTime, CronExpr cronExpr) {
         this.dateTime = dateTime;
         this.cronExpr = cronExpr;
     }

@@ -1,5 +1,7 @@
 package com.github.simkuenzi.cronext;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -27,7 +29,7 @@ import java.util.stream.Stream;
 class CronValue {
     private String valueExpr;
 
-    public CronValue(String valueExpr) {
+    CronValue(String valueExpr) {
         this.valueExpr = valueExpr;
     }
 
