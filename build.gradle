@@ -1,9 +1,13 @@
 plugins {
     id 'java'
+    id 'maven'
+    id 'signing'
+    id 'net.researchgate.release' version '2.6.0'
+    id 'io.codearte.nexus-staging' version '0.20.0'
 }
 
 group 'com.github.simkuenzi'
-version '0.0-SNAPSHOT'
+version version
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -15,3 +19,70 @@ repositories {
 dependencies {
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
 }
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    sign configurations.archives
+    useGpgCmd()
+}
+
+uploadArchives {
+    dependsOn = [jar, sourceJar, javadocJar]
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: mavenUser, password: mavenPassword)
+            }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: mavenUser, password: mavenPassword)
+            }
+            pom.project {
+                packaging 'jar'
+                name "$project.group:$project.name"
+                description 'croNext evaluates the next schedule time for a specified cron expression.'
+                url 'https://github.com/simkuenzi/cronext'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name 'Simon Künzi'
+                        email 'sim.kuenzi@gmail.com'
+                        organizationUrl 'https://github.com/simkuenzi'
+                    }
+                }
+                scm {
+                    connection 'scm:git:https://github.com/simkuenzi/cronext/cronext.git'
+                    developerConnection 'scm:git:https://github.com/simkuenzi/cronext/cronext.git'
+                    url 'https://github.com/simkuenzi/cronext'
+                }
+            }
+        }
+    }
+}
+
+afterReleaseBuild.dependsOn uploadArchives, closeAndReleaseRepository
+closeAndReleaseRepository.mustRunAfter uploadArchives

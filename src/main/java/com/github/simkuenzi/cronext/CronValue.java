@@ -1,7 +1,5 @@
 package com.github.simkuenzi.cronext;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
